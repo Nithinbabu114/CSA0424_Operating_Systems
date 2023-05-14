@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+#define NUM_PROCESSES 3
+
+int main()
+{
+    int burst_times[NUM_PROCESSES] = {10, 15, 25};
+    int arrival_time = 0;
+    int completion_time, turnaround_time, waiting_time;
+    int total_turnaround_time = 0, total_waiting_time = 0;
+    float avg_turnaround_time, avg_waiting_time;
+    int i;
+
+    for (i = 0; i < NUM_PROCESSES; i++) {
+        completion_time = arrival_time + burst_times[i];
+        turnaround_time = completion_time - arrival_time;
+        waiting_time = turnaround_time - burst_times[i];
+
+        total_turnaround_time += turnaround_time;
+        total_waiting_time += waiting_time;
+
+        arrival_time = completion_time;
+    }
+
+    avg_turnaround_time = (float)total_turnaround_time / NUM_PROCESSES;
+    avg_waiting_time = (float)total_waiting_time / NUM_PROCESSES;
+
+    printf("Process    Burst Time    Completion Time    Turnaround Time    Waiting Time\n");
+    for (i = 0; i < NUM_PROCESSES; i++) {
+        completion_time = burst_times[i] + (i > 0 ? completion_time : 0);
+        turnaround_time = completion_time;
+        waiting_time = (i > 0 ? waiting_time + burst_times[i - 1] : 0);
+        printf("  P%d\t\t%d\t\t%d\t\t%d\t\t%d\n", i + 1, burst_times[i], completion_time, turnaround_time, waiting_time);
+    }
+    printf("Average Turnaround Time: %.2f\n", avg_turnaround_time);
+    printf("Average Waiting Time: %.2f\n", avg_waiting_time);
+
+    return 0;
+}
