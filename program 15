@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#define NUM_TRACKS 9
+
+int main()
+{
+    int tracks[NUM_TRACKS] = {55, 58, 60, 70, 18, 90, 150, 160, 184};
+    int head_pos, prev_head_pos, total_head_movement;
+    float avg_head_movement;
+    int i;
+
+    // Initialize head position to first track
+    head_pos = tracks[0];
+    prev_head_pos = tracks[0];
+    total_head_movement = 0;
+
+    // Traverse tracks in FCFS order
+    for (i = 1; i < NUM_TRACKS; i++) {
+        prev_head_pos = head_pos;
+        head_pos = tracks[i];
+        total_head_movement += abs(head_pos - prev_head_pos);
+    }
+
+    // Calculate average head movement
+    avg_head_movement = (float)total_head_movement / NUM_TRACKS;
+
+    // Print results
+    printf("Track positions: ");
+    for (i = 0; i < NUM_TRACKS; i++) {
+        printf("%d ", tracks[i]);
+    }
+    printf("\n");
+    printf("Average head movement: %.2f\n", avg_head_movement);
+
+    return 0;
+}
