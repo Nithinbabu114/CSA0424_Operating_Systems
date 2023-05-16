@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+#define NUM_PARTITIONS 6
+#define NUM_PROCESSES 5
+
+void worstFit(int partitions[], int numPartitions, int processes[], int numProcesses) {
+    int allocation[numProcesses];  
+    int fragment[numPartitions];   
+    int i, j;
+
+    for (i = 0; i < numProcesses; i++) {
+        allocation[i] = -1;
+    }
+    for (i = 0; i < numPartitions; i++) {
+        fragment[i] = 0;
+    }
+
+    for (i = 0; i < numProcesses; i++) {
+        int worstFitIndex = -1;
+        for (j = 0; j < numPartitions; j++) {
+            if (partitions[j] >= processes[i]) {
+                if (worstFitIndex == -1 || partitions[j] > partitions[worstFitIndex]) {
+                    worstFitIndex = j;
+                }
+            }
+        }
+
+        if (worstFitIndex != -1) {
+            allocation[i] = worstFitIndex;
+            fragment[worstFitIndex] = partitions[worstFitIndex] - processes[i];
+            partitions[worstFitIndex] = -1;  
+        }
+    }
+
+    printf("Process\t\tProcess Size\t\tAllocated Partition\n");
+    for (i = 0; i < numProcesses; i++) {
+        printf("P%d\t\t%d KB\t\t\t", i + 1, processes[i]);
+        if (allocation[i] != -1) {
+            printf("Partition %d\n", allocation[i] + 1);
+        } else {
+            printf("Not Allocated\n");
+        }
+    }
