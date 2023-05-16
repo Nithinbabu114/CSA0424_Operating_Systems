@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#define DIRECTION_LEFT -1
+#define DIRECTION_RIGHT 1
+
+void scan(int tracks[], int numTracks, int initialPosition, int direction) {
+    int headMovement = 0;
+    int currentPosition = initialPosition;
+    int currentIndex;
+
+    for (currentIndex = 0; currentIndex < numTracks; currentIndex++) {
+        if (tracks[currentIndex] == currentPosition) {
+            break;
+        }
+    }
+
+    if (direction == DIRECTION_RIGHT) {
+        for (int i = currentIndex; i < numTracks; i++) {
+            printf("%d ", tracks[i]);
+            headMovement += abs(tracks[i] - currentPosition);
+            currentPosition = tracks[i];
+        }
+
+        for (int i = numTracks - 1; i >= 0; i--) {
+            printf("%d ", tracks[i]);
+            headMovement += abs(tracks[i] - currentPosition);
+            currentPosition = tracks[i];
+        }
+    } else if (direction == DIRECTION_LEFT) {
+        for (int i = currentIndex; i >= 0; i--) {
+            printf("%d ", tracks[i]);
+            headMovement += abs(tracks[i] - currentPosition);
+            currentPosition = tracks[i];
+        }
+
+        for (int i = 0; i < numTracks; i++) {
+            printf("%d ", tracks[i]);
+            headMovement += abs(tracks[i] - currentPosition);
+            currentPosition = tracks[i];
+        }
+    }
+
+    printf("\nAverage head movement: %.2f\n", (float)headMovement / numTracks);
+}
+
+int main() {
+    int tracks[] = {55, 58, 60, 70, 18};
+    int numTracks = sizeof(tracks) / sizeof(tracks[0]);
+    int initialPosition = 50;
+    int direction = DIRECTION_RIGHT;
+
+    scan(tracks, numTracks, initialPosition, direction);
+
+    return 0;
+}
