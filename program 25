@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+#define FILE_SIZE 100
+
+int contiguousAllocation(int blockPosition) {
+    return 1;
+}
+
+int linkedAllocation(int blockPosition) {
+    return 2;
+}
+
+int indexedAllocation(int blockPosition) {
+    return 2;
+}
+
+int main() {
+    int blockPosition;
+
+    printf("Test Case: Block added at the beginning\n");
+    blockPosition = 0;
+    printf("Contiguous Allocation: %d disk I/O operations\n", contiguousAllocation(blockPosition));
+    printf("Linked Allocation: %d disk I/O operations\n", linkedAllocation(blockPosition));
+    printf("Indexed Allocation: %d disk I/O operations\n\n", indexedAllocation(blockPosition));
+
+    printf("Test Case: Block added in the middle\n");
+    blockPosition = FILE_SIZE / 2;
+    printf("Contiguous Allocation: %d disk I/O operations\n", contiguousAllocation(blockPosition));
+    printf("Linked Allocation: %d disk I/O operations\n", linkedAllocation(blockPosition));
+    printf("Indexed Allocation: %d disk I/O operations\n\n", indexedAllocation(blockPosition));
+
+    printf("Test Case: Block added at the end\n");
+    blockPosition = FILE_SIZE - 1;
+    printf("Contiguous Allocation: %d disk I/O operations\n", contiguousAllocation(blockPosition));
+    printf("Linked Allocation: %d disk I/O operations\n", linkedAllocation(blockPosition));
+    printf("Indexed Allocation: %d disk I/O operations\n", indexedAllocation(blockPosition));
+
+    return 0;
+}
