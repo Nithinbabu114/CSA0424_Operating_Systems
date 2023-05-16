@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_USERS 3
+#define MAX_FILES 3
+
+struct User {
+    char name[20];
+    char files[MAX_FILES][20];
+};
+
+struct Directory {
+    struct User users[MAX_USERS];
+};
+
+void createDirectory(struct Directory *directory, char *username, int userIndex) {
+    strcpy(directory->users[userIndex].name, username);
+    printf("Directory created for user: %s\n", username);
+}
+
+void createFile(struct Directory *directory, char *filename, int userIndex) {
+    if (strcmp(directory->users[userIndex].name, "") == 0) {
+        printf("User directory does not exist. Please create a directory first.\n");
+        return;
+    }
+
+    for (int i = 0; i < MAX_FILES; i++) {
+        if (strcmp(directory->users[userIndex].files[i], "") == 0) {
+            strcpy(directory->users[userIndex].files[i], filename);
+            printf("File created with name '%s' in user directory: %s\n", filename, directory->users[userIndex].name);
+            return;
+        }
+    }
+
+    printf("User directory already has maximum number of files.\n");
+}
+
+int main() {
+    struct Directory directory;
+    memset(&directory, 0, sizeof(struct Directory));
+
+    createDirectory(&directory, "user1", 0);
+    createFile(&directory, "file1.txt", 0);
+    createFile(&directory, "file2.txt", 0);
+    createFile(&directory, "file3.txt", 0);
+
+    createDirectory(&directory, "user2", 1);
+    createFile(&directory, "file1.txt", 1);
+    createFile(&directory, "file2.txt", 1);
+
+    createDirectory(&directory, "user3", 2);
+    createFile(&directory, "file1.txt", 2);
+    createFile(&directory, "file2.txt", 2);
+
+    return 0;
+}
