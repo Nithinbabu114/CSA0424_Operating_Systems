@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+#define BLOCK_SIZE 8192  
+#define POINTER_SIZE 4   
+
+#define DIRECT_BLOCKS 12
+#define SINGLE_INDIRECT_BLOCKS (BLOCK_SIZE / POINTER_SIZE)
+#define DOUBLE_INDIRECT_BLOCKS (BLOCK_SIZE / POINTER_SIZE) * (BLOCK_SIZE / POINTER_SIZE)
+#define TRIPLE_INDIRECT_BLOCKS (BLOCK_SIZE / POINTER_SIZE) * (BLOCK_SIZE / POINTER_SIZE) * (BLOCK_SIZE / POINTER_SIZE)
+
+int main() {
+    int maxFileSize = 0;
+    int directBlockSpace = DIRECT_BLOCKS * BLOCK_SIZE;
+    int singleIndirectBlockSpace = SINGLE_INDIRECT_BLOCKS * BLOCK_SIZE;
+    int doubleIndirectBlockSpace = DOUBLE_INDIRECT_BLOCKS * BLOCK_SIZE;
+    int tripleIndirectBlockSpace = TRIPLE_INDIRECT_BLOCKS * BLOCK_SIZE;
+
+    maxFileSize = directBlockSpace + singleIndirectBlockSpace + doubleIndirectBlockSpace + tripleIndirectBlockSpace;
+
+    printf("Maximum file size: %d bytes\n", maxFileSize);
+
+    return 0;
+}
