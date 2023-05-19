@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+#define MAX_LENGTH 100
+
+int main() {
+    int fileDescriptor;
+    char fileName[50], data[MAX_LENGTH];
+
+    printf("Enter the name of the file: ");
+    scanf("%s", fileName);
+
+    fileDescriptor = open(fileName, O_CREAT | O_WRONLY, 0644);
+    if (fileDescriptor == -1) {
+        printf("Error creating the file.\n");
+        exit(1);
+    }
+
+    printf("Enter the data to write to the file (up to %d characters): ", MAX_LENGTH);
+    scanf(" %[^\n]", data);
+    write(fileDescriptor, data, sizeof(data));
+
+    close(fileDescriptor);
+
+    fileDescriptor = open(fileName, O_RDONLY);
+    if (fileDescriptor == -1) {
+        printf("Error opening the file.\n");
+        exit(1);
+    }
+
+    printf("\nData in the file:\n");
+    ssize_t bytesRead;
+    while ((bytesRead = read(fileDescriptor, data, sizeof(data))) > 0) {
+        write(STDOUT_FILENO, data, bytesRead);
+    }
+
+    close(fileDescriptor);
+
+    return 0;
+}
