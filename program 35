@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+#define NUM_BLOCKS 16
+#define I_NODE_BLOCKS 8
+#define FILE_BLOCKS_START 8
+#define FILE_SIZE_MIN 1
+
+int allocateBlocks(int fileBlocks[], int numFileBlocks, int startBlock);
+
+int main() {
+    int fileBlocks[] = {9, 10, 11, 12};  
+    int numFileBlocks = sizeof(fileBlocks) / sizeof(fileBlocks[0]);
+    int startBlock = 8;  
+
+    int success = allocateBlocks(fileBlocks, numFileBlocks, startBlock);
+
+    if (success) {
+        printf("File blocks allocated successfully.\n");
+    } else {
+        printf("Not enough contiguous blocks available for the file.\n");
+    }
+
+    return 0;
+}
