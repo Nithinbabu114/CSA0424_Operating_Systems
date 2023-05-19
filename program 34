@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+#define MAX_PARTITIONS 100
+
+void worstFit(int partitions[], int numPartitions, int processes[], int numProcesses);
+
+int main() {
+    int partitions[MAX_PARTITIONS] = {40, 10, 30, 60};
+    int numPartitions = 4;
+    int processes[] = {100, 50, 30, 120, 35};
+    int numProcesses = 5;
+
+    worstFit(partitions, numPartitions, processes, numProcesses);
+
+    return 0;
+}
+
+void worstFit(int partitions[], int numPartitions, int processes[], int numProcesses) {
+    int allocated[numProcesses];
+    int fragment[numPartitions];
+    int allocationDone = 0;
+
+    for (int i = 0; i < numProcesses; i++) {
+        allocated[i] = -1;
+    }
+
+    for (int i = 0; i < numProcesses; i++) {
+        int worstIndex = -1;
+        for (int j = 0; j < numPartitions; j++) {
+            if (partitions[j] >= processes[i]) {
+                if (worstIndex == -1 || partitions[j] > partitions[worstIndex]) {
+                    worstIndex = j;
+                }
+            }
+        }
+
+        if (worstIndex != -1) {
+            allocated[i] = worstIndex;
+            partitions[worstIndex] -= processes[i];
+        }
+    }
+
+    // Calculate external fragmentation for each partition
+    for (int i = 0; i < numPartitions; i++) {
+        fragment[i] = partitions[i];
+    }
+
+    printf("Process\t\tSize\t\tPartition\n");
+    for (int i = 0; i < numProcesses; i++) {
+        printf("P%d\t\t%d KB\t\t", i + 1, processes[i]);
+        if (allocated[i] != -1) {
+            printf("%d\n", allocated[i] + 1);
+        } else {
+            printf("Not Allocated\n");
+        }
+    }
+
+    printf("\nPartition\tFragmentation\n");
+    for (int i = 0; i < numPartitions; i++) {
+        printf("%d\t\t", i + 1);
+        if (fragment[i] != 0) {
+            printf("%d KB\n", fragment[i]);
+        } else {
+            printf("No Fragmentation\n");
+        }
+    }
+}
