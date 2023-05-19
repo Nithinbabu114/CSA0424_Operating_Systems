@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_TRACKS 100
+
+void cscan(int tracks[], int numTracks, int initialPosition);
+
+int main() {
+    int tracks[MAX_TRACKS] = {55, 58, 60, 70, 18};
+    int numTracks = 5;
+    int initialPosition = 50;
+
+    printf("Initial Head Position: %d\n", initialPosition);
+    printf("Tracks: ");
+    for (int i = 0; i < numTracks; i++) {
+        printf("%d ", tracks[i]);
+    }
+    printf("\n\n");
+
+    cscan(tracks, numTracks, initialPosition);
+
+    return 0;
+}
+
+void cscan(int tracks[], int numTracks, int initialPosition) {
+    int headMovement = 0;
+    int maxTrack = 100; 
+    int minTrack = 0;   
+
+    for (int i = 0; i < numTracks - 1; i++) {
+        for (int j = 0; j < numTracks - i - 1; j++) {
+            if (tracks[j] > tracks[j + 1]) {
+                int temp = tracks[j];
+                tracks[j] = tracks[j + 1];
+                tracks[j + 1] = temp;
+            }
+        }
+    }
+
+     int i;
+    for (i = 0; i < numTracks; i++) {
+        if (tracks[i] >= initialPosition) {
+            break;
+        }
+    }
+
+    printf("Sequence of Head Movement:\n");
+    for (; i < numTracks; i++) {
+        printf("%d -> ", tracks[i]);
+        headMovement += abs(tracks[i] - initialPosition);
+        initialPosition = tracks[i];
+    }
+
+    if (initialPosition < maxTrack) {
+        printf("%d -> %d -> ", maxTrack, minTrack);
+        headMovement += (maxTrack - initialPosition) + maxTrack - minTrack;
+        initialPosition = minTrack;
+    }
+
+    for (int j = 0; j < numTracks; j++) {
+        if (tracks[j] >= initialPosition) {
+            printf("%d -> ", tracks[j]);
+            headMovement += abs(tracks[j] - initialPosition);
+            initialPosition = tracks[j];
+        }
+    }
+
+    printf("END\n");
+
+    float avgHeadMovement = (float) headMovement / numTracks;
+    printf("\nAverage Head Movement: %.2f\n", avgHeadMovement);
+}
